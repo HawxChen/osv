@@ -1366,18 +1366,18 @@ int dup(int oldfd)
     return -1;
 }
 
-TRACEPOINT(trace_vfs_dup3, "%d %d 0x%x", int, int, int);
-TRACEPOINT(trace_vfs_dup3_ret, "%d", int);
-TRACEPOINT(trace_vfs_dup3_err, "%d", int);
+TRACEPOINT(trace_vfs_dup3fs, "%d %d 0x%x", int, int, int);
+TRACEPOINT(trace_vfs_dup3fs_ret, "%d", int);
+TRACEPOINT(trace_vfs_dup3fs_err, "%d", int);
 /*
  * Duplicate a file descriptor to a particular value.
  */
-int dup3(int oldfd, int newfd, int flags)
+int dup3fs(int oldfd, int newfd, int flags)
 {
     struct file *fp;
     int error;
 
-    trace_vfs_dup3(oldfd, newfd, flags);
+    trace_vfs_dup3fs(oldfd, newfd, flags);
     /*
      * Don't allow any argument but O_CLOEXEC.  But we even ignore
      * that as we don't support exec() and thus don't care.
@@ -1403,11 +1403,11 @@ int dup3(int oldfd, int newfd, int flags)
     }
 
     fdrop(fp);
-    trace_vfs_dup3_ret(newfd);
+    trace_vfs_dup3fs_ret(newfd);
     return newfd;
 
     out_errno:
-    trace_vfs_dup3_err(error);
+    trace_vfs_dup3fs_err(error);
     errno = error;
     return -1;
 }
@@ -1417,7 +1417,7 @@ int dup2(int oldfd, int newfd)
     if (oldfd == newfd)
         return newfd;
 
-    return dup3(oldfd, newfd, 0);
+    return dup3fs(oldfd, newfd, 0);
 }
 
 /*

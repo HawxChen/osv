@@ -1662,6 +1662,7 @@ libc += unistd/getsid.o
 libc += unistd/setsid.o
 libc += unistd/ttyname_r.o
 libc += unistd/ttyname.o
+libc += unistd/dup3.o
 
 musl += regex/fnmatch.o
 musl += regex/glob.o
