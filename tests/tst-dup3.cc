@@ -24,7 +24,6 @@ int main(void)
    // 1) Take fds for stdin, stdout and stderr and call ttyname_r and ttyname
    // 2) Use an invalid fd (-1) and call ttyname_r and ttyname
 
-   static const char* fd_str[] = {"STDIN_FILENO", "STDOUT_FILENO", "STDERR_FILENO"};
    int fds[3] = {STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO};
    int tmpfd = open("/tmp", 0, O_DIRECTORY);
    dup3(tmpfd, STDIN_FILENO, 0);
@@ -32,6 +31,7 @@ int main(void)
    report("isatty std* fd\0", isatty(fds[1]));
    report("isatty std* fd\0", isatty(fds[2]));
 
+   close(tmpfd);
    printf("SUMMARY: %u tests / %u failures\n", tests_total, tests_failed);
 #if 0
       int retval = ttyname_r(fds[i], buf, sizeof(buf));
